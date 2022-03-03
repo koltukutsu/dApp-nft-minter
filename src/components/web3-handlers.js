@@ -1,8 +1,17 @@
 // TODO refactor to propper module which has constructor, methods etc.
 import { tbtkNftJson } from "../contract/tbtk-nft-config";
 import { ethers } from "ethers";
+import { NFTStorage, File } from "nft.storage";
+import mime from "mime";
+// import fs from "fs";
+import path from "path";
 
+const NFT_STORAGE_KEY = "myKey";
+const PRICE = "0.001";
 var contract;
+
+// TODO: yapilacaklar: fs calismiyor, bunu hallet
+// veriyi gonder
 
 /**
  * Checks if metamask installed in browser
@@ -53,12 +62,54 @@ async function loadTbtkNftContact(contractAddress) {
 }
 
 /**
+ * Reads an image file from `imagePath` and stores an NFT with the given name and description.
+ * @param {string} imagePath the path to an image file
+ * @param {string} name a name for the NFT
+ * @param {string} description a text description for the NFT
+ */
+async function storeNFT(imagePath, name, email, description) {
+  const image = await fileFromPath(imagePath);
+  const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY });
+
+  return nftstorage.store({
+    image,
+    name,
+    email,
+    description,
+  });
+}
+
+/**
+ * A helper to read a file from a location on disk and return a File object.
+ * Note that this reads the entire file into memory and should not be used for
+ * very large files.
+ * @param {string} filePath the path to a file to store
+ * @returns {File} a File object containing the file content
+ */
+async function fileFromPath(filePath) {
+  // const content = await fs.promises.readFile(filePath);
+  const content = filePath;
+  const type = mime.getType(filePath);
+  return new File([content], path.basename(filePath), { type });
+}
+
+/**
  *
  * @param {string} address
  * @param {string} nftMetadataUri
+ * @param {string} imgPath
+ * @param {string} userName
+ * @param {string} userEmail
  * @returns {Object}
  */
-async function payToMintNft(address, nftMetadataUri) {
+async function payToMintNft(
+  address,
+  nftMetadataUri,
+  imgPath,
+  userName,
+  userEmail,
+  userDescription
+) {
   console.log("Minting NFT");
 
   // Returns this object
@@ -66,18 +117,22 @@ async function payToMintNft(address, nftMetadataUri) {
     result: true,
     message: "Nft minted succesfully",
     txHash: null,
-    image: "",
-    metada: "",
+    metaData: "",
+    // metada: "",
   };
 
   try {
-    const options = { value: ethers.utils.parseEther("0.05") };
+    const options = { value: ethers.utils.parseEther(PRICE) };
     let tx = await contract.payToMint(address, nftMetadataUri, options);
     resultObject.txHash = tx.hash;
 
-    //need to upload nft to the ipfs network
-
-    const uploadToIpfsNode = async () => {};
+    const CIDnft = await storeNFT(
+      imgPath,
+      userName,
+      userEmail,
+      userDescription
+    );
+    resultObject.metaData = await (await fetch(CIDnft.url)).json();
 
     return resultObject;
   } catch (e) {

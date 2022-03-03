@@ -15,6 +15,9 @@ function UserConnection() {
   const [nftDatas, updateNftData] = useState([]);
   const [userName, updateUserName] = useState("");
   const [userEmail, updateUserEmail] = useState("");
+  const [userDescription, updateUserDescription] = useState("");
+  const [imgPath, updateImgPath] = useState("");
+  const [imgUrl, updateImgUrl] = useState("");
 
   function isMetamaskInstalled() {
     let userCondition = checkMetamask();
@@ -45,17 +48,24 @@ function UserConnection() {
     let address = "0xe156e7C38c652119E393E0eA36A22005517E6103";
     let metaDataUri = "metadata111211111";
 
-    for (let i = 0; i < nftData.length; i++) {
+    for (let i = 0; i < nftDatas.length; i++) {
       try {
-        let currentData = await payToMintNft(address, metaDataUri);
+        let currentData = await payToMintNft(
+          address,
+          metaDataUri,
+          imgPath,
+          userName,
+          userEmail,
+          userDescription
+        );
 
         updateNftData(...(nftDatas) => [...nftDatas, currentData]);
       } catch (e) {
         alert("Ethereum Transaction was not carried!!!");
       } finally {
-        setNftData(nftData);
+        updateNftData(nftDatas);
         console.log("User Datas", userName, userEmail);
-        console.log("NFT data:", nftData);
+        console.log("NFT data:", nftDatas);
       }
     }
   }
@@ -89,7 +99,7 @@ function UserConnection() {
       </div>
       <table>
         <thead>
-          <tr>
+          <tr className="Nft-form-section">
             <th>
               <div className="Nft-minting-section">
                 {userAccount ? (
@@ -130,8 +140,32 @@ function UserConnection() {
                       />
                       <div className="cut cut-short"></div>
                     </div>
+                    <div className="input-container ic3">
+                      <input
+                        id="description"
+                        className="input"
+                        type="text"
+                        value={userDescription}
+                        placeholder="Email"
+                        onChange={(e) => updateUserDescription(e.target.value)}
+                        onBlur={(e) => updateUserDescription(e.target.value)}
+                      />
+                      <div className="cut cut-short"></div>
+                    </div>
+                    <input
+                      type="file"
+                      onChange={(e) => updateImgPath(e.target.value)}
+                      onBlur={(e) => updateImgPath(e.target.value)}
+                    />
                     <button
-                      disabled={!(userEmail.length && userName.length)}
+                      disabled={
+                        !(
+                          userEmail.length &&
+                          userName.length &&
+                          userDescription.length &&
+                          imgPath.length
+                        )
+                      }
                       type="text"
                       className="submit"
                     >
@@ -152,6 +186,7 @@ function UserConnection() {
             <th>
               <div className="Nft-displaying-section">
                 <h2>No nft minted </h2>
+                {imgUrl && <img src={imgUrl} width="600px" />}
               </div>
             </th>
           </tr>

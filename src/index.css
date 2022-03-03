@@ -126,6 +126,11 @@ button[disabled] {
   margin-top: 30px;
 }
 
+.ic3 {
+  margin-top: 30px;
+  height: auto;
+}
+
 .input {
   background-color: #303245;
   border-radius: 12px;
