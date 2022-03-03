@@ -147,8 +147,11 @@ function UserConnection() {
               </div>
             </th>
             <th>
+              <div className="Place-holder"></div>
+            </th>
+            <th>
               <div className="Nft-displaying-section">
-                <h1>No nft minted </h1>
+                <h2>No nft minted </h2>
               </div>
             </th>
           </tr>

@@ -43,7 +43,10 @@ button[disabled] {
   background-color: #cccccc;
   color: #666666;
 }
-
+.Place-holder {
+  background-color: transparent;
+  width: 400px;
+}
 .Nft-displaying-section {
   background-color: #15172b;
   box-sizing: border-box;
