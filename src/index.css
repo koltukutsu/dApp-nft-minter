@@ -7,21 +7,21 @@ body {
   font-family: sans-serif;
   font-size: 36px;
   font-weight: 600;
-  color: #023047;
+  color: #f8edeb;
   justify-content: center;
   align-items: center;
   height: "100vh";
 }
 button {
-  background-color: #d1d646;
+  background-color: #e8e8e4;
   border-radius: 12px;
   border: 0;
   box-sizing: border-box;
-  color: #eee;
+  color: #15172b;
   cursor: pointer;
   font-family: sans-serif;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: bold;
   height: 50px;
   margin-top: 38px;
   outline: 0;
@@ -29,15 +29,41 @@ button {
   width: 100%;
   align-items: center;
 }
-.accountInfoHolder {
+
+button:hover {
+  border: 1px solid #0099cc;
+  background-color: #00aacc;
+  color: #ffffff;
+  padding: 5px 10px;
+}
+
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.Nft-displaying-section {
   background-color: #15172b;
-  border-radius: 20px;
   box-sizing: border-box;
-  height: 250px;
+  border-radius: 20px;
   padding: 20px;
   align-items: center;
-  width: 400px;
+  height: auto;
+  width: 350px;
+  color: #f8edeb;
+}
+.accountInfoHolder {
+  background-color: #15172b;
   color: #f7f7f7;
+  border-radius: 20px;
+  box-sizing: border-box;
+  height: auto;
+  width: auto;
+  padding: 20px;
+  align-items: center;
+  text-align: center;
 }
 .No-Connection {
   background-color: #15172b;
@@ -47,6 +73,15 @@ button {
   padding: 20px;
   align-items: center;
   width: 280px;
+}
+.Metamask-installation {
+  background-color: #15172b;
+  border-radius: 20px;
+  box-sizing: border-box;
+  height: auto;
+  padding: 20px;
+  align-items: center;
+  width: auto;
 }
 .form {
   background-color: #15172b;

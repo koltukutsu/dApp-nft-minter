@@ -66,16 +66,23 @@ async function payToMintNft(address, nftMetadataUri) {
     result: true,
     message: "Nft minted succesfully",
     txHash: null,
+    image: "",
+    metada: "",
   };
 
   try {
     const options = { value: ethers.utils.parseEther("0.05") };
     let tx = await contract.payToMint(address, nftMetadataUri, options);
-
     resultObject.txHash = tx.hash;
+
+    //need to upload nft to the ipfs network
+
+    const uploadToIpfsNode = async () => {};
+
     return resultObject;
   } catch (e) {
     console.log("PayToMintNft error");
+    alert("Not Enought Ethereum!!!");
     resultObject.result = false;
     resultObject.message = e.data.message;
     return resultObject;

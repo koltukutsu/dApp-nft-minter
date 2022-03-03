@@ -10,19 +10,9 @@ import {
 
 function UserConnection() {
   const [metaMaskCondition, setMetaMaskCondition] = useState(false);
-
   const [userAccount, setUserAccount] = useState("");
   const [contract, setContract] = useState();
-  const [nftData, setNftData] = useState([
-    {
-      address: "0xe156e7C38c652119E393E0eA36A22005517E6103",
-      metaDataUri: "metadata111211111",
-      result: "",
-      message: "",
-      txHash: "",
-    },
-  ]);
-
+  const [nftDatas, updateNftData] = useState([]);
   const [userName, updateUserName] = useState("");
   const [userEmail, updateUserEmail] = useState("");
 
@@ -52,20 +42,14 @@ function UserConnection() {
   }
 
   async function MintNFT() {
+    let address = "0xe156e7C38c652119E393E0eA36A22005517E6103";
+    let metaDataUri = "metadata111211111";
+
     for (let i = 0; i < nftData.length; i++) {
       try {
-        let { result, message, txHash } = await payToMintNft(
-          nftData[i].address,
-          nftData[i].metaDataUri
-        );
-        let currentData = {
-          address: nftData[i].address,
-          metaDataUri: nftData[i].metaDataUri,
-          result: result,
-          message: message,
-          txHash: txHash,
-        };
-        nftData[i] = currentData;
+        let currentData = await payToMintNft(address, metaDataUri);
+
+        updateNftData(...(nftDatas) => [...nftDatas, currentData]);
       } catch (e) {
         alert("Ethereum Transaction was not carried!!!");
       } finally {
@@ -99,62 +83,77 @@ function UserConnection() {
   });
 
   return (
-    <div className="Account-holder">
+    <div className="All-container">
       <div className="Metamask-section">
         <MetamaskSection />
       </div>
-      <br></br>
-
-      <div className="Nft-section">
-        {userAccount ? (
-          <form
-            className="form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              try {
-                MintNFT();
-              } catch (e) {
-                alert("An error occured while minting NFT");
-              }
-            }}
-          >
-            <div className="title">Welcome</div>
-            <div className="subtitle">Let's create an Nft</div>
-            <div className="input-container ic1">
-              <input
-                id="firstname"
-                className="input"
-                type="text"
-                value={userName}
-                placeholder="First and Surname"
-                onChange={(e) => updateUserName(e.target.value)}
-                onBlur={(e) => updateUserName(e.target.value)}
-              />
-              <div className="cut"></div>
-            </div>
-            <div className="input-container ic2">
-              <input
-                id="email"
-                className="input"
-                type="text"
-                value={userEmail}
-                placeholder="Email"
-                onChange={(e) => updateUserEmail(e.target.value)}
-                onBlur={(e) => updateUserEmail(e.target.value)}
-              />
-              <div className="cut cut-short"></div>
-            </div>
-            <button type="text" className="submit">
-              Submit
-            </button>
-          </form>
-        ) : (
-          <div className="No-Connection">
-            <div className="title">Welcome</div>
-            <div className="subtitle">Please Connect Your Account</div>
-          </div>
-        )}
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <div className="Nft-minting-section">
+                {userAccount ? (
+                  <form
+                    className="form"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      try {
+                        MintNFT();
+                      } catch (e) {
+                        alert("An error occured while minting NFT");
+                      }
+                    }}
+                  >
+                    <div className="title">Welcome</div>
+                    <div className="subtitle">Let's create an Nft</div>
+                    <div className="input-container ic1">
+                      <input
+                        id="firstname"
+                        className="input"
+                        type="text"
+                        value={userName}
+                        placeholder="First and Surname"
+                        onChange={(e) => updateUserName(e.target.value)}
+                        onBlur={(e) => updateUserName(e.target.value)}
+                      />
+                      <div className="cut"></div>
+                    </div>
+                    <div className="input-container ic2">
+                      <input
+                        id="email"
+                        className="input"
+                        type="text"
+                        value={userEmail}
+                        placeholder="Email"
+                        onChange={(e) => updateUserEmail(e.target.value)}
+                        onBlur={(e) => updateUserEmail(e.target.value)}
+                      />
+                      <div className="cut cut-short"></div>
+                    </div>
+                    <button
+                      disabled={!(userEmail.length && userName.length)}
+                      type="text"
+                      className="submit"
+                    >
+                      Submit
+                    </button>
+                  </form>
+                ) : (
+                  <div className="No-Connection">
+                    <div className="title">Welcome</div>
+                    <div className="subtitle">Please Connect Your Account</div>
+                  </div>
+                )}
+              </div>
+            </th>
+            <th>
+              <div className="Nft-displaying-section">
+                <h1>No nft minted </h1>
+              </div>
+            </th>
+          </tr>
+        </thead>
+      </table>
     </div>
   );
 }
