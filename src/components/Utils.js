@@ -12,12 +12,14 @@ function UserConnection() {
   const [metaMaskCondition, setMetaMaskCondition] = useState(false);
   const [userAccount, setUserAccount] = useState("");
   const [contract, setContract] = useState();
-  const [nftDatas, updateNftData] = useState([]);
   const [userName, updateUserName] = useState("");
   const [userEmail, updateUserEmail] = useState("");
   const [userDescription, updateUserDescription] = useState("");
   const [imgPath, updateImgPath] = useState("");
-  const [imgUrl, updateImgUrl] = useState("");
+  // const [imgUrl, updateImgUrl] = useState("");
+
+  const [nftDatas, updateNftData] = useState([]);
+  const [imgUrlELements, updateImgElements] = useState([]);
 
   function isMetamaskInstalled() {
     let userCondition = checkMetamask();
@@ -44,29 +46,63 @@ function UserConnection() {
     await LoadContract();
   }
 
+  // async function MintNFT() {
+  //   let address = "0xe156e7C38c652119E393E0eA36A22005517E6103";
+  //   let metaDataUri = "metadata111211111";
+
+  //   for (let i = 0; i < nftDatas.length; i++) {
+  //     try {
+  //       let currentData = await payToMintNft(
+  //         address,
+  //         metaDataUri,
+  //         imgPath,
+  //         userName,
+  //         userEmail,
+  //         userDescription
+  //       );
+
+  //       updateNftData(...(nftDatas) => [...nftDatas, currentData]);
+  //     } catch (e) {
+  //       alert("Ethereum Transaction was not carried!!!");
+  //     } finally {
+  //       updateNftData(nftDatas);
+  //       console.log("User Datas", userName, userEmail);
+  //       console.log("NFT data:", nftDatas);
+  //     }
+  //   }
+  // }
   async function MintNFT() {
     let address = "0xe156e7C38c652119E393E0eA36A22005517E6103";
     let metaDataUri = "metadata111211111";
+    let imgUrlElement;
 
-    for (let i = 0; i < nftDatas.length; i++) {
-      try {
-        let currentData = await payToMintNft(
-          address,
-          metaDataUri,
-          imgPath,
-          userName,
-          userEmail,
-          userDescription
-        );
+    try {
+      let currentData = await payToMintNft(
+        address,
+        metaDataUri,
+        imgPath,
+        userName,
+        userEmail,
+        userDescription
+      );
 
-        updateNftData(...(nftDatas) => [...nftDatas, currentData]);
-      } catch (e) {
-        alert("Ethereum Transaction was not carried!!!");
-      } finally {
-        updateNftData(nftDatas);
-        console.log("User Datas", userName, userEmail);
-        console.log("NFT data:", nftDatas);
-      }
+      imgUrlElement = currentData.imgPath && (
+        <div className="Nft-image-holder">
+          <h3>{currentData.userName}</h3>
+          <img src={currentData.imgPath} alt={currentData.userDescription} />
+          <br></br>
+        </div>
+      );
+
+      // updateNftData(...(nftDatas) => [...nftDatas, currentData]);
+      updateNftData([...nftDatas, currentData]);
+      updateImgElements([...imgUrlELements, imgUrlElement]);
+    } catch (e) {
+      alert("Ethereum Transaction was not carried!!!");
+    } finally {
+      updateNftData(nftDatas);
+      console.log("User Datas", userName, userEmail);
+      console.log("NFT data:", nftDatas);
     }
   }
 
@@ -186,7 +222,8 @@ function UserConnection() {
             <th>
               <div className="Nft-displaying-section">
                 <h2>No nft minted </h2>
-                {imgUrl && <img src={imgUrl} width="600px" />}
+                {/* {imgUrl && <img src={imgUrl} width="600px" />} */}
+                {imgUrlELements.length && imgUrlELements}
               </div>
             </th>
           </tr>

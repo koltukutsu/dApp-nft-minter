@@ -4,13 +4,14 @@ import { ethers } from "ethers";
 import { NFTStorage, File } from "nft.storage";
 import mime from "mime";
 // import fs from "fs";
-import path from "path";
+// import path from "path";
 
 const NFT_STORAGE_KEY = "myKey";
 const PRICE = "0.001";
 var contract;
 
-// TODO: yapilacaklar: fs calismiyor, bunu hallet
+// TODO: yapilacaklar: fs ve path reactte calismiyor, bunlar nodejs/backend kutuphaneleri
+// bunu hallet
 // veriyi gonder
 
 /**
@@ -68,7 +69,8 @@ async function loadTbtkNftContact(contractAddress) {
  * @param {string} description a text description for the NFT
  */
 async function storeNFT(imagePath, name, email, description) {
-  const image = await fileFromPath(imagePath);
+  // const image = await fileFromPath(imagePath);
+  const image = null;
   const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY });
 
   return nftstorage.store({
@@ -86,12 +88,12 @@ async function storeNFT(imagePath, name, email, description) {
  * @param {string} filePath the path to a file to store
  * @returns {File} a File object containing the file content
  */
-async function fileFromPath(filePath) {
-  // const content = await fs.promises.readFile(filePath);
-  const content = filePath;
-  const type = mime.getType(filePath);
-  return new File([content], path.basename(filePath), { type });
-}
+// async function fileFromPath(filePath) {
+//   // const content = await fs.promises.readFile(filePath);
+//   const content = filePath;
+//   const type = mime.getType(filePath);
+//   return new File([content], path.basename(filePath), { type });
+// }
 
 /**
  *
