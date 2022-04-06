@@ -2,7 +2,7 @@
 ### You can upload your images to the network through a smartcontract
 
 
-### Before this project, I didn't have any knowledge or interest in Web. By trying to understand the fundamentals, I appreciated the web techs and liked to use them.
+### Before doing this project, I didn't have any knowledge or interest in Web. By trying to understand the fundamentals, I appreciated the web techs and liked to use them.
 # What I have learnt throughout this project (basially the fundamentals of Web)
 - Basics of Web3 and what happened throughout the web journey
 - What is an NFT
